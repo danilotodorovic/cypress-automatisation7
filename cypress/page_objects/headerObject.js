@@ -1,6 +1,6 @@
 class Header {
     get loginButton(){
-        return cy.get("a[href'/login']");
+        return cy.get("a[href='/login']");
     }
     get registerButton(){
         return cy.get("a[href'/register']");

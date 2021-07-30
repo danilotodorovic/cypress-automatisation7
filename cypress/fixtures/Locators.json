@@ -1,7 +1,9 @@
 {
     "Header": {
         "Login": "a[href='/login']",
-        "Register": "a[href='/register']"
+        "Register": "a[href='/register']",
+        "CreateGallery": "a[href='/create']",
+        "AllGalleries": "All Galleries"
     },
     "Login": {
         "Email": "#email",
@@ -17,5 +19,11 @@
         "ConfirmedPassword": "#password-confirmation",
         "Checkbox": "input[type='checkbox']",
         "Submit": "button[type='submit']"
+    },
+    "CreateGallery": {
+        "Title": "#title",
+        "Description": "#description",
+        "ImageUrl": "input[placeholder='image url']",
+        "Submit": "Submit"
     }
 }
