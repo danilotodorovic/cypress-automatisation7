@@ -17,22 +17,31 @@ describe("Vezbamo intercept", () => {
     //     })
     // })
 
-    it("Izvlacenje vrednosti prilikom kreiranja galerije", () => {
-        cy.intercept("POST", "https://gallery-api.vivifyideas.com/api/galleries").as("createdGallery")
+    beforeEach("Login", () => {
         cy.visit("/");
         header.loginClick();
         authLogin.login("danilotodorqvic@gmail.com", "bratdejan6");
+        cy.get(".nav-link").should("have.length", 4);
+    })
+
+    it("Izvlacenje vrednosti prilikom kreiranja galerije", () => {
+        cy.intercept("POST", "https://gallery-api.vivifyideas.com/api/galleries").as("createdGallery")
         createGallery.createGalleryClick();
         createGallery.galleryCreation("Neki title", "Neki description", "https://tinypng.com/images/social/website.jpg");
         cy.wait("@createdGallery").then((interception) => {
-            // console.log("created gallery interception", interception)
+            console.log("created gallery interception", interception)
             galleryID = interception.response.body.id;
             console.log(galleryID)
         })
+        header.logout();
+
+    })
+
+    it("Delete gallery", () => {
+        console.log(galleryID);
         cy.visit(`galleries/${galleryID}`);
         cy.contains("Delete Gallery").click();
-
-
+        header.logout();
     })
 
     // it("Posetiti i obrisati novokreiranu galeriju", () => {
