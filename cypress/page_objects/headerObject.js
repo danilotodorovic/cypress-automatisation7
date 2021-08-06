@@ -3,7 +3,7 @@ class Header {
         return cy.get("a[href='/login']");
     }
     get registerButton(){
-        return cy.get("a[href'/register']");
+        return cy.get("a[href='/register']");
     }
     get logoutButton(){
         return cy.get(".ml-auto > :nth-child(3) > .nav-link");
