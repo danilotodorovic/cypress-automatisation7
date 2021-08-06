@@ -45,6 +45,15 @@ describe("Vezbamo intercept", () => {
     it("Posetiti i obrisati novokreiranu galeriju", () => {
         cy.visit(`galleries/${galleryID}`);
         cy.contains("Delete Gallery").click();
+        header.logout();
+
+    })
+
+    it("Delete gallery", () => {
+        console.log(galleryID);
+        cy.visit(`galleries/${galleryID}`);
+        cy.contains("Delete Gallery").click();
+        header.logout();
     })
 
     it.only("Intersept logouta", () => {
