@@ -1,39 +1,82 @@
 /// <reference types="cypress" />
 
-import { authLogin } from "../../page_objects/loginObject";
-import { header } from "../../page_objects/headerObject";
+describe("Creating gallery through backend", () => {
 
-describe("POM login", () => {
+let token;
+let id;
 
-    before(() => {
-        cy.request("POST", "https://gallery-api.vivifyideas.com/api/auth/login", 
-        {
-            email: "danilotodorqvic@gmail.com",
-            password: "bratdejan6"
-        }).its("body").then((response) => {
-            // console.log("ovde logujemo", response);
-            let token = response.access_token;
+    it("login", () => {
+        cy.request({
+            method: "POST",
+            url: "https://gallery-api.vivifyideas.com/api/auth/login",
+            body: {
+                email: "danilotodorqvic@gmail.com",
+                password: "bratdejan6"
+            }
+        }).then((response) => {
+            console.log(response)
+            expect(response).to.have.property("status", 200);
+            expect(response.body).to.not.be.null;
+            token = response.body.access_token;
+            console.log("prvi console", token);
+            console.log("body", response)
         });
+    })
 
-        // cy.loginCommand("danilotodorqvic@gmail.com", "bratdejan6")
-
-        // cy.loginCommandEnv();
-    });
-
-    it("create gallery through backend", () => {
-        // cy.visit("/create");
-
-        cy.request("POST", "https://gallery-api.vivifyideas.com/api/galleries",
-        {
-            authorization: Bearer `${token}`
-        },
-        {
-            title:"ahareh",
-            description:"rehahrh",
-            images:"https://tinypng.com/images/social/website.jpg"
-        }).its("body").then((response) => {
-            console.log("response", response);
-            
+    it("create gallery", () => {
+        cy.request({
+            method: "POST",
+            url: "https://gallery-api.vivifyideas.com/api/galleries",
+            auth: {
+                bearer: token
+            },            
+            body: {
+                title: "neki title",
+                description: "neki descr",
+                images: ['https://tinypng.com/images/social/website.jpg']
+            }
+        }).then((response) => {
+            console.log("create gall", response);
+            expect(response).to.have.property("status", 201);
+            expect(response).to.have.property("statusText", "Created");
+            expect(response.body.title).to.equal("neki title");
+            expect(response.body.description).to.equal("neki descr");
+            id = response.body.id;
         })
     })
-});
+
+    it("edit gallery", () => {
+        cy.request({
+            method: "PUT",
+            url: `https://gallery-api.vivifyideas.com/api/galleries/${id}`,
+            auth: {
+                bearer: token
+            },            
+            body: {
+                title: "neki novi title",
+                description: "neki novi descr",
+                images: ['https://tinypng.com/images/social/website.jpg']
+            }
+        }).then((response) => {
+            console.log("edit", response);
+            expect(response).to.have.property("status", 200);
+            expect(response.body.title).to.equal("neki novi title");
+            expect(response.body.description).to.equal("neki novi descr");
+            expect(response.body.id).to.equal(id);
+        })
+    })
+
+    it("delete gallery", () => {
+        cy.request({
+            method: "DELETE",
+            url: `https://gallery-api.vivifyideas.com/api/galleries/${id}`,
+            auth: {
+                bearer: token
+            }            
+        }).then((response) => {
+            console.log("delete", response);
+            expect(response).to.have.property("status", 200);
+        })
+    })
+})
+
