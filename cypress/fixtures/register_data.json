@@ -1,0 +1,18 @@
+[
+    {   "caseName":"Register short password",
+        "FirstName":"djura",
+        "LastName":"djuric",
+        "Email":"djuradjuric@test.com",
+        "Password": "lala",
+        "PasswordConfirm": "lala",
+        "ErrorMessage" : "The password must be at least 8 characters."
+    },
+    {   "caseName":"Register with invalid password format",
+        "FirstName":"pera",
+        "LastName":"pera",
+        "Email":"pera12345@test.com",
+        "Password": "perapera",
+        "PasswordConfirm": "perapera",
+        "ErrorMessage" : "The password format is invalid."
+    }
+]
